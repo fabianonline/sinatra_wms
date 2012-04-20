@@ -4,7 +4,7 @@ require "sinatra_wms/version"
 
 Gem::Specification.new do |s|
   s.name        = "sinatra_wms"
-  s.version     = SinatraWms::VERSION
+  s.version     = SinatraWMS::VERSION
   s.authors     = ["Fabian Schlenz"]
   s.email       = ["mail@fabianonline.de"]
   s.homepage    = ""
