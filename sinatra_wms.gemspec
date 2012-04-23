@@ -13,6 +13,9 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "sinatra_wms"
 
+  s.add_dependency('sinatra', '>=1.0.0')
+  s.add_dependency('rmagick')
+
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
