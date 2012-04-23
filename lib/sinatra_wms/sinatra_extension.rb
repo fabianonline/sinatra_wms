@@ -23,6 +23,7 @@ module Sinatra
 
 				image = Magick::Image.new(options[:width], options[:height]) { self.background_color = 'transparent' }
 				gc = Magick::Draw.new
+				gc.stroke("black")
 				
 				gc.wms_settings = {
 					:bbox => options[:bbox][:wgs84],
