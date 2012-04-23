@@ -20,5 +20,6 @@ This gem allows you to very easily represent your data via a WMS. On one hand it
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.extra_rdoc_files = ["README.rdoc"]
   s.require_paths = ["lib"]
 end

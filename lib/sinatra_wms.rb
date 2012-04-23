@@ -3,6 +3,9 @@ require "sinatra_wms/sinatra_extension"
 require "sinatra_wms/rmagick_extension"
 
 module SinatraWMS
+	
+	##
+	# Convert a set of coordinates from sperical mercator to WGS84.
 	def self.merc_to_latlon(x, y)
 		lon = (x / 6378137.0) / Math::PI * 180
 		lat = Math::atan(Math::sinh(y / 6378137.0)) / Math::PI * 180
@@ -13,6 +16,15 @@ module SinatraWMS
 		Math.sin(x * Math::PI / 180)
 	end
 	
+	##
+	# Returns generic HTML code to display a transparent OSM map and images from the WMS.
+	#
+	# * +url+ has to be the full URL to the WMS. Since this module can't use Sinatra's helper,
+	#   please call it using this helper, e.g. +url("/wms")+.
+	# * Other options used are:
+	#   * +:title+ - Sets the HTML title attribute.
+	#   * +:opacity:+ - Sets the opacity of the OSM map in the background.
+	#   * +:datasource_name+ - Sets the name of the WMS source in the layer selector menu.
 	def self.get_html_for_map_at(url, options={})
 		options[:title] ||= "Sinatra-WMS"
 		options[:opacity] ||= 1
