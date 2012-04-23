@@ -4,29 +4,28 @@ require 'RMagick'
 # Monkeypatching RMagick to add some methods to +Magick::Draw+.
 module Magick
 	class Draw
-		##
-		# Which methods with one coordinates as parameter to add +_wgs84+ method to
-		WMS_FUNCTIONS_SINGLE = %w(color matte point text bigpoint)
-		##
-		# Which methods with two coordinates as parameter to add +_wgs84+ method to
-		WMS_FUNCTIONS_DOUBLE = %w(circle ellipse line rectangle roundrectangle)
+		## Wrapper for +color+, but with coordinates given in WGS84.
+		def color_wgs84(x, y, *args);     args.unshift(* latlon_to_pixels(x, y)); color(*args);    end
+		## Wrapper for +point+, but with coordinates given in WGS84.
+		def point_wgs84(x, y, *args);     args.unshift(* latlon_to_pixels(x, y)); point(*args);    end
+		## Wrapper for +matte+, but with coordinates given in WGS84.
+		def matte_wgs84(x, y, *args);     args.unshift(* latlon_to_pixels(x, y)); matte(*args);    end
+		## Wrapper for +text+, but with coordinates given in WGS84.
+		def text_wgs84(x, y, *args);      args.unshift(* latlon_to_pixels(x, y)); text(*args);     end
+		## Wrapper for +bigpoint+, but with coordinates given in WGS84.
+		def bigpoint_wgs84(x, y, *args);  args.unshift(* latlon_to_pixels(x, y)); bigpoint(*args); end
+		## Wrapper for +ellipse+, but with coordinates given in WGS84.
+		def ellipse_wgs84(x, y, *args);   args.unshift(* latlon_to_pixels(x, y)); ellipse(*args);  end
 		
-		##
-		# We use method_missing to catch calls to the +_wgs84+ methods.
-		def method_missing(sym, *args, &block)
-			result = sym.to_s.match /^([a-z0-9_]+)_(?:wgs84)$/
-			if result && respond_to?(result[1]) && @wms_settings
-				if WMS_FUNCTIONS_SINGLE.include?(result[1])
-					args[0], args[1] = latlon_to_pixels(args[0], args[1])
-				elsif WMS_FUNCTIONS_DOUBLE.include?(result[1])
-					args[0], args[1] = latlon_to_pixels(args[0], args[1])
-					args[2], args[3] = latlon_to_pixels(args[2], args[3])
-				end
-				send(result[1], *args, &block)
-			else
-				super(sym, *args, &block)
-			end
-		end
+		
+		## Wrapper for +circle+, but with coordinates given in WGS84.
+		def circle_wgs84         (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); cirle(*args);          end
+		## Wrapper for +line+, but with coordinates given in WGS84.
+		def line_wgs84           (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); line(*args);           end
+		## Wrapper for +rectangle+, but with coordinates given in WGS84.
+		def rectangle_wgs84      (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); rectangle(*args);      end
+		## Wrapper for +roundrectangle+, but with coordinates given in WGS84.
+		def roundrectangle_wgs84 (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); roundrectangle(*args); end
 		
 		##
 		# This method gets the data from +SinatraExtension+ and does some calculations
@@ -43,13 +42,6 @@ module Magick
 		# The same as +point+, but draws a "big point" with 3 pixels width and height.
 		def bigpoint(x, y)
 			rectangle(x-1, y-1, x+1, y+1)
-		end
-		
-		##
-		# See +method_missing+
-		def respond_to?(sym)
-			result = sym.to_s.match /^([a-z0-9_]+)_(?:wgs84)$/
-			(result && super(result[1]) && @wms_settings) || super(sym)
 		end
 		
 		private
