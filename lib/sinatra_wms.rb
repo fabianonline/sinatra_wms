@@ -11,10 +11,6 @@ module SinatraWMS
 		lat = Math::atan(Math::sinh(y / 6378137.0)) / Math::PI * 180
 		return [lat, lon]
 	end
-
-	def self.deg_sin(x)
-		Math.sin(x * Math::PI / 180)
-	end
 	
 	##
 	# Returns generic HTML code to display a transparent OSM map and images from the WMS.
