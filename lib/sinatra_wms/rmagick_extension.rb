@@ -22,9 +22,9 @@ module Magick
 		end
 		
 		def wms_settings=(hash)
-			hash[:min_sin_y] = 2*Math.asin(hash[:bbox][0][0] / 90.0) / Math::PI
-			hash[:max_sin_y] = 2*Math.asin(hash[:bbox][1][0] / 90.0) / Math::PI
-			
+			hash[:min_sin_y] = Math::asinh(Math::tan(hash[:bbox][0][0] / 180.0 * Math::PI)) * 6378137.0
+			hash[:max_sin_y] = Math::asinh(Math::tan(hash[:bbox][1][0] / 180.0 * Math::PI)) * 6378137.0
+			hash[:diff_y] = hash[:max_sin_y] - hash[:min_sin_y]
 			hash[:factor_x] = hash[:width] / (hash[:bbox][1][1] - hash[:bbox][0][1])
 			@wms_settings = hash
 		end
@@ -42,7 +42,7 @@ module Magick
 		def latlon_to_pixels(x, y)
 			raise "wms_settings is missing values" unless [:bbox, :factor_x, :min_sin_y, :max_sin_y, :height].all?{|v| @wms_settings.has_key?(v)}
 			x = ((x - @wms_settings[:bbox][0][1]) * @wms_settings[:factor_x]).round
-			y = (1 - (((2 * Math.asin(y / 90.0) / Math::PI) - @wms_settings[:min_sin_y]) / (@wms_settings[:max_sin_y] - @wms_settings[:min_sin_y]))) * @wms_settings[:height]
+			y = (1 - (((Math::asinh(Math::tan(y / 180.0 * Math::PI)) * 6378137.0) - @wms_settings[:min_sin_y]) / @wms_settings[:diff_y])) * @wms_settings[:height]
 			return [x, y]
 		end
 	end
