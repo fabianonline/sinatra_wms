@@ -6,7 +6,6 @@ module Magick
 		WMS_FUNCTIONS_DOUBLE = %w(circle ellipse line rectangle roundrectangle)
 		
 		def method_missing(sym, *args, &block)
-			puts sym
 			result = sym.to_s.match /^([a-z0-9_]+)_(?:wgs84)$/
 			if result && respond_to?(result[1]) && @wms_settings
 				if WMS_FUNCTIONS_SINGLE.include?(result[1])
