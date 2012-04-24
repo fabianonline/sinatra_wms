@@ -16,6 +16,7 @@ This gem allows you to very easily represent your data via a WMS. On one hand it
 
   s.add_dependency('sinatra', '>=1.0.0')
   s.add_dependency('rmagick')
+  s.add_development_dependency('rspec', '~> 2.9')
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
