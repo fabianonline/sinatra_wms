@@ -13,7 +13,7 @@ module SinatraWMS
 	end
 	
 	##
-	# Returns generic HTML code to display a transparent OSM map and images from the WMS.
+	# Returns generic HTML code to display a transparent basemap (OSM or Google Maps) and images from the WMS.
 	#
 	# * +url+ has to be the full URL to the WMS. Since this module can't use Sinatra's helper,
 	#   please call it using this helper, e.g. +url("/wms")+.
@@ -21,15 +21,32 @@ module SinatraWMS
 	#   * +:title+ - Sets the HTML title attribute.
 	#   * +:opacity:+ - Sets the opacity of the OSM map in the background.
 	#   * +:datasource_name+ - Sets the name of the WMS source in the layer selector menu.
+	#   * +:baselayer+ - Which baselayer to use. Supported values are:
+	#     * +:osm+ (default)
+	#     * +:google_streets+
+	#     * +:google_satellite+
+	#     * +:google_hybrid+
+	#     * +:google_terrain+
 	def self.get_html_for_map_at(url, options={})
 		options[:title] ||= "Sinatra-WMS"
 		options[:opacity] ||= 1
 		options[:datasource_name] ||= "WMS-Data"
+		options[:baselayer] ||= :osm
+		
+		baselayer_definition = case options[:baselayer]
+			when :osm then "new OpenLayers.Layer.OSM()"
+			when :google_streets then 'new OpenLayers.Layer.Google("Google Streets")'
+			when :google_satellite then 'new OpenLayers.Layer.Google("Google Satellite", {type: google.maps.MapTypeId.SATELLITE})'
+			when :google_hybrid then 'new OpenLayers.Layer.Google("Google Hybrid", {type: google.maps.MapTypeId.HYBRID})'
+			when :google_terrain then 'new OpenLayers.Layer.Google("Google Terrain", {type: google.maps.MapTypeId.TERRAIN})'
+			else raise "Unknown value for baselayer: #{options[:baselayer]}"
+		end
 
 		%Q{
 		<html>
 			<head>
 				<title>#{options[:title]}</title>
+				#{options[:baselayer].to_s[0..6]=='google_'  ?  '<script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>'  :  '' }
 				<script src="http://openlayers.org/api/OpenLayers.js"></script>
 				<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 			</head>
@@ -41,9 +58,10 @@ module SinatraWMS
 					var map = new OpenLayers.Map('map');
 					map.addControl(new OpenLayers.Control.LayerSwitcher());
 
-					var osm_layer = new OpenLayers.Layer.OSM();
-					osm_layer.setOpacity(#{options[:opacity]});
-					map.addLayer(osm_layer);
+					var base_layer = #{baselayer_definition};
+					map.addLayer(base_layer);
+					base_layer.setOpacity(#{options[:opacity]});
+					
 
 					var layer = new OpenLayers.Layer.WMS("#{options[:datasource_name]}", "#{url}", {transparent: true}, {maxExtent: imagebounds});
 

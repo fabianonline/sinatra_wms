@@ -11,7 +11,7 @@ Another way would be to use a Google Map or something and use a JavaScript to ad
 You could zoom in and out an such - but you'd have to care about getting your data to JavaScript to add the markers. And it won't be that fast once you reach some kind of limit.
 
 The solution for this problem: WMS (Web Map Service).  
-This gem helps you to provide a WMS to be used with OpenLayers. OpenLayers will display the OpenStreetMap at a configurable Opacity and add your data on top of it. Whenever you scroll or zoom around the map, OpenLayers will request images of a part of the visible screen. Your code has to generate them on-the-fly and deliver them back.
+This gem helps you to provide a WMS to be used with OpenLayers. OpenLayers will display a baselayer (OpenStreetMap or Google Maps) at a configurable Opacity and add your data on top of it. Whenever you scroll or zoom around the map, OpenLayers will request images of a part of the visible screen. Your code has to generate them on-the-fly and deliver them back.
 
 
 == How do I use SinatraWMS?
@@ -50,8 +50,11 @@ In my example, I will use SinatraWMS to display the locations of my geolocated t
   # This is the main entry point for this app.
   # This code just outputs generic HTML code to load OpenLayers, show the OSM
   # as transparent background and our WMS stuff on top of that.
+  # +:baselayer+ defined which source is used as a map underneath your data.
+  # You could replace +:osm+ by e.g. +:google_streets+ to show Google's street
+  # maps.
   get '/' do
-      SinatraWMS::get_html_for_map_at url("/wms"), :opacity=>0.3, :title=>"My Tweets"
+      SinatraWMS::get_html_for_map_at url("/wms"), :opacity=>0.3, :title=>"My Tweets", :baselayer=>:osm
   end
   
   # This code gets run for every image requested by OpenLayers. It is given a
