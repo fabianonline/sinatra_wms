@@ -10,7 +10,9 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/fabianonline/sinatra_wms"
   s.summary     = "Extends Sinatra to allow the developer to easily build a WMS server"
   s.description = %q(A WMS (Web Map Service) is a great way to show lots of geolocated data on a map. Instead of generating static images (which will either be huge or don't have enough resolution), a WMS allows you to dynamically zoom in and out of your dataset.
+
 This gem allows you to very easily represent your data via a WMS. On one hand it extends Sinatra to give it a method called "wms" to process WMS-requests; on the other hand it extends RMagick to allow the developer to use coordinates in the methods used for drawing.
+
 Convenient methods to easily generate HTML code to show your WMS data on top of OpenStreetMaps or Google Maps are also included.)
 
   s.rubyforge_project = "sinatra_wms"

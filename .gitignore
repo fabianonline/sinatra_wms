@@ -1,3 +1,4 @@
+html
 *.gem
 .bundle
 Gemfile.lock
