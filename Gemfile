@@ -3,5 +3,10 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in sinatra_wms.gemspec
 gemspec
 
-gem 'rdoc'
+group :development do
+	gem 'rdoc'
+end
 
+group :test, :development do
+	gem 'rake'
+end
