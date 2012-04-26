@@ -29,7 +29,7 @@ module SinatraWMS
 	#     * +:google_terrain+
 	def self.get_html_for_map_at(url, options={})
 		options[:title] ||= "Sinatra-WMS"
-		options[:opacity] ||= 1
+		options[:opacity] ||= 1.0
 		options[:datasource_name] ||= "WMS-Data"
 		options[:baselayer] ||= :osm
 		

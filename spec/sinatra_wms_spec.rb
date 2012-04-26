@@ -33,5 +33,10 @@ describe SinatraWMS do
 		it 'should raise an error when an unknown baselayer is to be set' do
 			expect {SinatraWMS::get_html_for_map_at('/test', :baselayer=>:foo)}.to raise_error
 		end
+		
+		it 'should set opacity correctly' do
+			SinatraWMS::get_html_for_map_at('/test').should =~ /base_layer.setOpacity\(1.0\);/
+			SinatraWMS::get_html_for_map_at('/test', :opacity=>0.3).should =~ /base_layer.setOpacity\(0.3\);/
+		end
 	end
 end

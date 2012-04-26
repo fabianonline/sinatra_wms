@@ -19,7 +19,7 @@ module Magick
 		
 		
 		## Wrapper for +circle+, but with coordinates given in WGS84.
-		def circle_wgs84         (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); cirle(*args);          end
+		def circle_wgs84         (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); circle(*args);         end
 		## Wrapper for +line+, but with coordinates given in WGS84.
 		def line_wgs84           (x1, y1, x2, y2, *args); args.unshift(* latlon_to_pixels(x2, y2)).unshift(* latlon_to_pixels(x1, y1)); line(*args);           end
 		## Wrapper for +rectangle+, but with coordinates given in WGS84.
