@@ -39,6 +39,10 @@ module Magick
 		end
 		
 		##
+		# Getter for wms_settings.
+		def wms_settings; @wms_settings; end
+		
+		##
 		# The same as +point+, but draws a "big point" with 3 pixels width and height.
 		def bigpoint(x, y)
 			rectangle(x-1, y-1, x+1, y+1)
