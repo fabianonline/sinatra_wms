@@ -13,7 +13,9 @@ Gem::Specification.new do |s|
 
 This gem allows you to very easily represent your data via a WMS. On one hand it extends Sinatra to give it a method called "wms" to process WMS-requests; on the other hand it extends RMagick to allow the developer to use coordinates in the methods used for drawing.
 
-Convenient methods to easily generate HTML code to show your WMS data on top of OpenStreetMaps or Google Maps are also included.)
+Convenient methods to easily generate HTML code to show your WMS data on top of OpenStreetMaps or Google Maps are also included.
+
+Current test status: [![Build Status](https://secure.travis-ci.org/fabianonline/sinatra_wms.png?branch=master)](http://travis-ci.org/fabianonline/sinatra_wms) )
 
   s.rubyforge_project = "sinatra_wms"
 

@@ -13,6 +13,8 @@ You could zoom in and out an such - but you'd have to care about getting your da
 The solution for this problem: WMS (Web Map Service).  
 This gem helps you to provide a WMS to be used with OpenLayers. OpenLayers will display a baselayer (OpenStreetMap or Google Maps) at a configurable Opacity and add your data on top of it. Whenever you scroll or zoom around the map, OpenLayers will request images of a part of the visible screen. Your code has to generate them on-the-fly and deliver them back.
 
+Current test status: {<img src="https://secure.travis-ci.org/fabianonline/sinatra_wms.png?branch=master" alt="Build Status" />}[http://travis-ci.org/fabianonline/sinatra_wms]
+
 
 == How do I use SinatraWMS?
 
