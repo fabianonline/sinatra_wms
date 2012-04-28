@@ -10,3 +10,7 @@ end
 group :test, :development do
 	gem 'rake'
 end
+
+group :test do
+	gem 'rack-test'
+end

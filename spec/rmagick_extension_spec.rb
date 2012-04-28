@@ -61,4 +61,13 @@ describe 'RMagick extensions' do
 		@canvas.should_receive(:rectangle).with(10, 21, 12, 23)
 		@canvas.bigpoint(11, 22)
 	end
+	
+	it "should calculate missing values when wms_settings are given" do
+		@canvas = Magick::Draw.new()
+		@canvas.wms_settings={:bbox=>[[-10, -5], [20, 30]], :width=>256, :height=>256}
+		(@canvas.wms_settings[:max_sin_y]*1000000000).round.should == (2273030.92698769*1000000000).round
+		(@canvas.wms_settings[:min_sin_y]*1000000000).round.should == (-1118889.974857959*1000000000).round
+		(@canvas.wms_settings[:diff_y]*1000000000).round.should == (3391920.901845649*1000000000).round
+		@canvas.wms_settings[:factor_x].should == 7
+	end
 end
