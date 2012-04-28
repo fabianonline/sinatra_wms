@@ -16,7 +16,7 @@ describe "Sinatra extensions:" do
 		end
 	
 		it "should be provided" do
-			Sinatra::Application.methods.should include("wms")
+			Sinatra::Application.methods.should include( RUBY_VERSION>="1.9"  ?  :wms  :  "wms" )
 		end
 
 		describe "should use the given block" do
