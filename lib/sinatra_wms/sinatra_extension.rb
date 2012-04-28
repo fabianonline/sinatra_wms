@@ -16,10 +16,10 @@ module Sinatra
 		# After the block has run, we return the image to the requestee.
 		def wms(url, &block)
 			get url do
-				headers "Content-Type" => "image/png"
 				# convert the given parameters to lowercase symbols
 				options = params.inject({}) {|hash, (key, value)| hash[key.to_s.downcase.to_sym] = value; hash }
-				
+				error(400, "Parameter(s) missing") unless [:width, :height, :bbox, :srs].all? {|elm| options.include?(elm)}
+								
 				# interpret :width and :height as integer
 				[:width, :height].each {|what| options[what] = options[what].to_i}
 				
@@ -30,7 +30,7 @@ module Sinatra
 					options[:bbox][:google] = options[:bbox][:original]
 					options[:bbox][:wgs84] = [*SinatraWMS::merc_to_latlon(bbox[0], bbox[1])], [*SinatraWMS::merc_to_latlon(bbox[2], bbox[3])]
 				else
-					raise "Unexpected Projection (srs): #{options[:srs]}"
+					error(400, "Unexpected Projection (srs): #{options[:srs]}")
 				end
 				
 				# calculate the current zoom level (between 0 and 17, with 0 being the while world)
@@ -47,6 +47,9 @@ module Sinatra
 					:bbox => options[:bbox][:wgs84],
 					:width => options[:width],
 					:height => options[:height]}
+					
+				headers "Content-Type" => "image/png"
+				
 				
 				# Call the block
 				block.call(gc, options)
