@@ -3,3 +3,4 @@ html
 .bundle
 Gemfile.lock
 pkg/*
+coverage

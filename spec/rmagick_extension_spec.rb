@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe 'RMagick extensions' do
 	before :each do
 		@canvas = Magick::Draw.new()
